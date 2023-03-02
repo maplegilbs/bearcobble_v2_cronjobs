@@ -52,7 +52,7 @@ export async function insertData(){
             )
             const insertedTankData = await pool.query(
                 `
-                insert into tanklogs
+                insert into tanksnapshots
                 (
                     recordDateTime, 
                     tank1Height, tank1Vol, tank1Time, 
