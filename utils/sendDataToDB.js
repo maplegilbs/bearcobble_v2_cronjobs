@@ -3,6 +3,7 @@ import mysql from 'mysql2';
 //Functions
 import { getSensorData } from './getSensorData.js';
 import { calcVolFromHeight } from './tankVolFromHeight.js'
+import { adjustForUTC } from './adjForUTCDate.js';
 
 //Connect to database
 const pool = mysql.createPool(
@@ -42,12 +43,12 @@ export async function insertData(){
                 )
                 `,
                 [
-                    new Date(),
-                    sensorData[0].section1.vacuum_reading, new Date(sensorData[0].section1.reading_time),
-                    sensorData[0].section2.vacuum_reading, new Date(sensorData[0].section2.reading_time),
-                    sensorData[0].section3.vacuum_reading, new Date(sensorData[0].section3.reading_time),
-                    sensorData[0].section4.vacuum_reading, new Date(sensorData[0].section4.reading_time),
-                    sensorData[0].section5.vacuum_reading, new Date(sensorData[0].section5.reading_time),
+                    adjustForUTC(new Date()),
+                    sensorData[0].section1.vacuum_reading, adjustForUTC(new Date(sensorData[0].section1.reading_time)),
+                    sensorData[0].section2.vacuum_reading, adjustForUTC(new Date(sensorData[0].section2.reading_time)),
+                    sensorData[0].section3.vacuum_reading, adjustForUTC(new Date(sensorData[0].section3.reading_time)),
+                    sensorData[0].section4.vacuum_reading, adjustForUTC(new Date(sensorData[0].section4.reading_time)),
+                    sensorData[0].section5.vacuum_reading, adjustForUTC(new Date(sensorData[0].section5.reading_time)),
                 ]
             )
             const insertedTankData = await pool.query(
@@ -72,12 +73,12 @@ export async function insertData(){
                 )
                 `,
                 [
-                    new Date(),
-                    sensorData[1].tank1.tank_level, calcVolFromHeight(sensorData[1].tank1.tank_level), new Date(sensorData[1].tank1.reading_time),
-                    sensorData[1].tank2.tank_level, calcVolFromHeight(sensorData[1].tank2.tank_level), new Date(sensorData[1].tank2.reading_time),
-                    sensorData[1].tank3.tank_level, calcVolFromHeight(sensorData[1].tank3.tank_level), new Date(sensorData[1].tank3.reading_time),
-                    sensorData[1].tank4.tank_level, calcVolFromHeight(sensorData[1].tank4.tank_level), new Date(sensorData[1].tank4.reading_time),
-                    sensorData[1].tank5.tank_level, calcVolFromHeight(sensorData[1].tank5.tank_level), new Date(sensorData[1].tank5.reading_time),
+                    adjustForUTC(new Date()),
+                    sensorData[1].tank1.tank_level, calcVolFromHeight(sensorData[1].tank1.tank_level), adjustForUTC(new Date(sensorData[1].tank1.reading_time)),
+                    sensorData[1].tank2.tank_level, calcVolFromHeight(sensorData[1].tank2.tank_level), adjustForUTC(new Date(sensorData[1].tank2.reading_time)),
+                    sensorData[1].tank3.tank_level, calcVolFromHeight(sensorData[1].tank3.tank_level), adjustForUTC(new Date(sensorData[1].tank3.reading_time)),
+                    sensorData[1].tank4.tank_level, calcVolFromHeight(sensorData[1].tank4.tank_level), adjustForUTC(new Date(sensorData[1].tank4.reading_time)),
+                    sensorData[1].tank5.tank_level, calcVolFromHeight(sensorData[1].tank5.tank_level), adjustForUTC(new Date(sensorData[1].tank5.reading_time)),
                 ]
             )
         }
