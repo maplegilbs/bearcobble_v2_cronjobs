@@ -1,7 +1,6 @@
 //Libraries
 import mysql from 'mysql2';
-//Local development only
-// import dotenv from 'dotenv'
+// import dotenv from 'dotenv' //Local development only
 // dotenv.config();
 
 const pool = mysql.createPool(
