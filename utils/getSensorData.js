@@ -3,12 +3,26 @@
 // import dotenv from 'dotenv'
 // dotenv.config();
 
+export default async function (req, res) {
+    if(req.method === 'GET') {
+        try {
+            
+            res.send(fetchedWeatherJSON);
+        } catch (error) {
+            console.error(`There was an error in fetching current weather data from weather underground: error: ${error} `);
+            res.send(null)
+        }
+    }
+}
+
 
 //fetch smartrek sensor data and extract relevant information  - return that data as an array with two objects in it for vacuum and tank sensors data
 export async function getSensorData() {
     try {
         let sensorResponse = await fetch(process.env.SMARTREK_SENSORS_JSON_URL);
         let sensorJSON = await sensorResponse.json();
+        let fetchedWeatherRes = await fetch (`https://api.weather.com/v2/pws/observations/current?stationId=${process.env.WU_STATIONID}&format=json&units=e&apiKey=${process.env.WU_APIKEY}`);
+        let fetchedWeatherJSON = await fetchedWeatherRes.json();
         let extractedSensorData =
             [
                 {
@@ -64,7 +78,9 @@ export async function getSensorData() {
                         tank_level: sensorJSON.database.table.row[8].data_1,
                         reading_time: sensorJSON.database.table.row[8].timeTag_EXT.realtime
                     }
-                }
+                },
+                fetchedWeatherJSON['observations']['0']['imperial']['pressure']
+
             ];
             return extractedSensorData;
     } catch (error) {

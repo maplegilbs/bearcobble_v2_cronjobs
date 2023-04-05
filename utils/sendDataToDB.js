@@ -30,7 +30,8 @@ export async function insertData(){
                     vac2, vac2Time, 
                     vac3, vac3Time,
                     vac4, vac4Time,
-                    vac5, vac5Time
+                    vac5, vac5Time,
+                    barometer
                 )
                 values 
                 (
@@ -39,7 +40,8 @@ export async function insertData(){
                     ?, ?,
                     ?, ?,
                     ?, ?,
-                    ?, ?
+                    ?, ?,
+                    ?
                 )
                 `,
                 [
@@ -49,6 +51,7 @@ export async function insertData(){
                     sensorData[0].section3.vacuum_reading, adjustForUTC(new Date(sensorData[0].section3.reading_time)),
                     sensorData[0].section4.vacuum_reading, adjustForUTC(new Date(sensorData[0].section4.reading_time)),
                     sensorData[0].section5.vacuum_reading, adjustForUTC(new Date(sensorData[0].section5.reading_time)),
+                    sensorData[2]
                 ]
             )
             const insertedTankData = await pool.query(
